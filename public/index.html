@@ -3,156 +3,118 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pearl Pair - Get Session</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>Pearl-MD - Pair & QR</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
-body{
-  background:#0a0a0f;
-  background-image:radial-gradient(at 20% 30%, #1e1b4b 0%, transparent 50%),
-                   radial-gradient(at 80% 70%, #4c1d95 0%, transparent 50%),
-                   radial-gradient(at 40% 80%, #1e3a8a 0%, transparent 50%);
-  min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;color:#fff;
-}
-.container{width:100%;max-width:420px}
-.header{text-align:center;margin-bottom:30px}
-.header h1{font-size:32px;font-weight:700;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.header p{color:#9ca3af;margin-top:8px;font-size:14px}
-.card{
-  background:rgba(17,17,23,0.8);
-  backdrop-filter:blur(20px);
-  border:1px solid rgba(255,255,255,0.1);
-  border-radius:24px;padding:28px;
-  box-shadow:0 20px 60px rgba(0,0,0,0.5);
-}
-.input-group{margin-bottom:20px}
-.input-group label{font-size:12px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;display:block}
-.input-box{
-  display:flex;align-items:center;
-  background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.1);
-  border-radius:14px;padding:4px 4px 4px 16px;
-  transition:0.3s;
-}
+body{background:#0a0a0f;background-image:radial-gradient(at 20% 30%, #1e1b4b 0%, transparent 50%),radial-gradient(at 80% 70%, #4c1d95 0%, transparent 50%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;color:#fff}
+.container{width:100%;max-width:440px}
+.header{text-align:center;margin-bottom:24px}
+.logo{width:72px;height:72px;margin:0 auto 12px;border-radius:20px;background:linear-gradient(135deg,#6366f1,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:32px;box-shadow:0 10px 30px rgba(99,102,241,0.4);overflow:hidden}
+.logo img{width:100%;height:100%;object-fit:cover}
+.header h1{font-size:30px;font-weight:700;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header p{color:#9ca3af;font-size:13px;margin-top:6px}
+.card{background:rgba(17,17,23,0.85);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+.tabs{display:flex;background:rgba(255,255,255,0.06);border-radius:14px;padding:4px;margin-bottom:20px}
+.tab{flex:1;padding:10px;text-align:center;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;transition:0.3s;color:#9ca3af}
+.tab.active{background:rgba(99,102,241,0.2);color:#a78bfa;border:1px solid rgba(99,102,241,0.3)}
+.input-group{margin-bottom:18px}
+.input-group label{font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;display:block}
+.input-box{display:flex;align-items:center;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:4px 4px 4px 16px;transition:0.3s}
 .input-box:focus-within{border-color:#6366f1;background:rgba(99,102,241,0.1)}
-.input-box input{
-  flex:1;background:transparent;border:none;outline:none;
-  color:#fff;font-size:15px;padding:12px 0;
-}
-.input-box input::placeholder{color:#6b7280}
-.btn{
-  width:100%;padding:14px;border:none;border-radius:14px;
-  font-weight:600;font-size:15px;cursor:pointer;transition:0.3s;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-}
+.input-box input{flex:1;background:transparent;border:none;outline:none;color:#fff;font-size:15px;padding:12px 0}
+.btn{width:100%;padding:14px;border:none;border-radius:14px;font-weight:600;font-size:14px;cursor:pointer;transition:0.3s;display:flex;align-items:center;justify-content:center;gap:8px}
 .btn-primary{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(99,102,241,0.4)}
-.btn-secondary{background:rgba(255,255,255,0.08);color:#fff;border:1px solid rgba(255,255,255,0.1);margin-top:12px}
-.btn-secondary:hover{background:rgba(255,255,255,0.12)}
-.code-display{
-  margin-top:20px;background:rgba(0,0,0,0.4);
-  border:1px dashed rgba(99,102,241,0.5);
-  border-radius:14px;padding:20px;text-align:center;
-  display:none;
-}
-.code-display.show{display:block;animation:fadeIn 0.5s}
-.code-display h3{font-size:28px;letter-spacing:4px;color:#a78bfa;margin:10px 0}
-.code-display p{font-size:12px;color:#9ca3af}
-.copy-btn{
-  margin-top:12px;background:rgba(167,139,250,0.2);border:1px solid rgba(167,139,250,0.3);
-  color:#a78bfa;padding:8px 16px;border-radius:8px;font-size:12px;cursor:pointer;
-}
-.session-box{
-  margin-top:20px;background:rgba(16,185,129,0.1);
-  border:1px solid rgba(16,185,129,0.3);
-  border-radius:14px;padding:16px;display:none;word-break:break-all;
-}
-.session-box.show{display:block;animation:fadeIn 0.5s}
-.session-box code{font-size:11px;color:#6ee7b7;line-height:1.5}
-.footer{margin-top:24px;display:flex;gap:12px}
+.btn:disabled{opacity:0.6;transform:none}
+.code-display,.qr-display{margin-top:18px;background:rgba(0,0,0,0.4);border:1px dashed rgba(99,102,241,0.5);border-radius:14px;padding:18px;text-align:center;display:none}
+.code-display.show,.qr-display.show{display:block;animation:fadeIn 0.4s}
+.code-display h3{font-size:28px;letter-spacing:4px;color:#a78bfa;margin:8px 0}
+.qr-display img{width:220px;height:220px;background:#fff;border-radius:12px;padding:10px;margin:10px auto;display:block}
+.copy-btn{margin-top:10px;background:rgba(167,139,250,0.2);border:1px solid rgba(167,139,250,0.3);color:#a78bfa;padding:8px 18px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:0.2s;position:relative;overflow:hidden}
+.copy-btn.copied{background:rgba(16,185,129,0.2)!important;color:#6ee7b7!important;border-color:rgba(16,185,129,0.4)!important}
+.session-box{margin-top:18px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);border-radius:14px;padding:16px;display:none;word-break:break-all}
+.session-box.show{display:block;animation:fadeIn 0.4s}
+.session-box code{font-size:11px;color:#6ee7b7}
+.footer{margin-top:20px;display:flex;gap:10px}
 .footer a{flex:1;text-align:center;padding:10px;background:rgba(255,255,255,0.05);border-radius:10px;font-size:12px;color:#9ca3af;text-decoration:none;border:1px solid rgba(255,255,255,0.08)}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.loader{width:18px;height:18px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite;display:inline-block}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:#111827;border:1px solid rgba(255,255,255,0.1);color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;display:flex;align-items:center;gap:8px;transition:0.4s;z-index:999;opacity:0}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.loader{width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite;display:inline-block}
 @keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
 <div class="container">
 <div class="header">
+<div class="logo" id="logoBox">💎<img id="logoImg" style="display:none" src="./logo.png" onerror="this.style.display='none'"></div>
 <h1>Pearl-MD</h1>
-<p>Pair Code & Session Generator</p>
+<p>Pair Code & QR Generator</p>
 </div>
 <div class="card">
+<div class="tabs">
+<div class="tab active" id="tabPair" onclick="switchTab('pair')">🔑 Pair Code</div>
+<div class="tab" id="tabQR" onclick="switchTab('qr')">📷 QR Code</div>
+</div>
+<div id="pairSection">
 <div class="input-group">
 <label>WhatsApp Number</label>
-<div class="input-box">
-<input id="num" type="text" placeholder="234 801 234 5678" />
+<div class="input-box"><input id="num" type="text" placeholder="234 801 234 5678"></div>
+</div>
+<button class="btn btn-primary" id="pairBtn" onclick="getCode()"><span id="pairText">✨ Get Pair Code</span></button>
+<div class="code-display" id="codeBox"><p style="font-size:11px;color:#9ca3af">YOUR PAIR CODE</p><h3 id="codeText"></h3><p style="font-size:11px;color:#6b7280">Linked Devices > Link with phone number</p><button class="copy-btn" id="copyCodeBtn" onclick="copyCode(this)">📋 Copy Code</button></div>
+</div>
+<div id="qrSection" style="display:none">
+<button class="btn btn-primary" id="qrBtn" onclick="getQR()"><span id="qrText">📷 Get QR Code</span></button>
+<div class="qr-display" id="qrBox"><p style="font-size:11px;color:#9ca3af">SCAN IN WHATSAPP</p><img id="qrImg" src=""><p style="font-size:11px;color:#6b7280;margin-top:8px">Expires in 60 seconds</p></div>
+</div>
+<button class="btn" style="margin-top:14px;background:rgba(255,255,255,0.08);color:#fff;border:1px solid rgba(255,255,255,0.1)" onclick="getSession()">📋 Get PEARL~ Session</button>
+<div class="session-box" id="sessionBox"><p style="font-size:11px;color:#6ee7b7;margin-bottom:6px">✅ PEARL~ SESSION</p><code id="sessionText"></code><br><button class="copy-btn" style="background:rgba(16,185,129,0.2);color:#6ee7b7;border-color:rgba(16,185,129,0.3)" id="copySessBtn" onclick="copySession(this)">📋 Copy Session</button></div>
+<div class="footer"><a href="https://github.com/teddybee/Pearl" target="_blank">⭐ GitHub</a><a href="#" target="_blank">💬 Channel</a></div>
 </div>
 </div>
-<button class="btn btn-primary" id="pairBtn" onclick="getCode()">
-<span id="pairText">✨ Get Pair Code</span>
-</button>
-
-<div class="code-display" id="codeBox">
-<p>Your Pair Code</p>
-<h3 id="codeText"></h3>
-<p>WhatsApp > Linked Devices > Link with phone number</p>
-<button class="copy-btn" onclick="copyCode()">Copy Code</button>
-</div>
-
-<button class="btn btn-secondary" onclick="getSession()">📋 Get PEARL~ Session</button>
-
-<div class="session-box" id="sessionBox">
-<p style="font-size:12px;color:#6ee7b7;margin-bottom:8px;">✅ Your PEARL~ Session</p>
-<code id="sessionText"></code>
-<br><button class="copy-btn" style="background:rgba(16,185,129,0.2);color:#6ee7b7;border-color:rgba(16,185,129,0.3)" onclick="copySession()">Copy Session</button>
-</div>
-
-<div class="footer">
-<a href="https://github.com/teddybee/Pearl" target="_blank">⭐ GitHub</a>
-<a href="https://whatsapp.com/channel/0029Vax4b2zA2p2fDvKk2n1L" target="_blank">💬 Channel</a>
-</div>
-</div>
-</div>
-
+<div class="toast" id="toast"><span id="toastIcon">✅</span><span id="toastMsg">Copied!</span></div>
 <script>
-let currentCode = "";
+let currentCode="";
+function switchTab(t){
+ document.getElementById('tabPair').classList.toggle('active',t==='pair');
+ document.getElementById('tabQR').classList.toggle('active',t==='qr');
+ document.getElementById('pairSection').style.display=t==='pair'?'block':'none';
+ document.getElementById('qrSection').style.display=t==='qr'?'block':'none';
+}
+function showToast(msg,icon='✅'){
+ let toast=document.getElementById('toast');
+ document.getElementById('toastMsg').innerText=msg;
+ document.getElementById('toastIcon').innerText=icon;
+ toast.classList.add('show');
+ setTimeout(()=>toast.classList.remove('show'),2500);
+}
+function animateCopy(btn){
+ let old=btn.innerText;
+ btn.classList.add('copied'); btn.innerText='✅ Copied!';
+ setTimeout(()=>{btn.classList.remove('copied');btn.innerText=old},2000);
+}
 async function getCode(){
- let n=document.getElementById('num').value;
- if(!n) return alert("Enter number with country code");
- let btn=document.getElementById('pairBtn');
- let txt=document.getElementById('pairText');
+ let n=document.getElementById('num').value; if(!n) return showToast('Enter number with country code','⚠️');
+ let btn=document.getElementById('pairBtn'); let txt=document.getElementById('pairText');
  btn.disabled=true; txt.innerHTML='<span class="loader"></span> Generating...';
- try{
-   let r=await fetch('/pair?number='+encodeURIComponent(n));
-   let j=await r.json();
-   if(j.code){
-     currentCode=j.code;
-     document.getElementById('codeText').innerText=j.code;
-     document.getElementById('codeBox').classList.add('show');
-   } else { alert(j.error || "Failed") }
- } catch(e){ alert("Error: "+e.message) }
+ try{let r=await fetch('/pair?number='+encodeURIComponent(n)); let j=await r.json(); if(j.code){currentCode=j.code; document.getElementById('codeText').innerText=j.code; document.getElementById('codeBox').classList.add('show'); showToast('Pair code generated!','✨'); navigator.clipboard.writeText(j.code);} else showToast(j.error||'Failed','❌');}catch(e){showToast(e.message,'❌')}
  btn.disabled=false; txt.innerHTML='✨ Get Pair Code';
 }
+async function getQR(){
+ let btn=document.getElementById('qrBtn'); let txt=document.getElementById('qrText');
+ btn.disabled=true; txt.innerHTML='<span class="loader"></span> Generating QR...';
+ try{let r=await fetch('/qr'); let j=await r.json(); if(j.qr){document.getElementById('qrImg').src=j.qr; document.getElementById('qrBox').classList.add('show'); showToast('QR Ready! Scan now','📷');} else if(j.error){showToast('Add /qr route in index.js','⚠️'); document.getElementById('qrBox').innerHTML='<p style=color:#f87171>'+j.error+'</p>'; document.getElementById('qrBox').classList.add('show');} }catch(e){showToast('Need /qr endpoint','⚠️')}
+ btn.disabled=false; txt.innerHTML='📷 Get QR Code';
+}
 async function getSession(){
- let box=document.getElementById('sessionBox');
- let txt=document.getElementById('sessionText');
- txt.innerText='Generating...'; box.classList.add('show');
- try{
-   let r=await fetch('/session');
-   let j=await r.json();
-   if(j.session){ txt.innerText=j.session } else { txt.innerText=j.error }
- } catch(e){ txt.innerText="Error: "+e.message }
+ let box=document.getElementById('sessionBox'); let txt=document.getElementById('sessionText'); txt.innerText='Generating...'; box.classList.add('show');
+ try{let r=await fetch('/session'); let j=await r.json(); if(j.session){txt.innerText=j.session; showToast('Session ready!','📋');} else txt.innerText=j.error;}catch(e){txt.innerText=e.message}
 }
-function copyCode(){
- navigator.clipboard.writeText(currentCode);
- alert("Code copied: "+currentCode);
-}
-function copySession(){
- let s=document.getElementById('sessionText').innerText;
- navigator.clipboard.writeText(s);
- alert("PEARL~ Session copied!");
-}
+function copyCode(btn){ if(!currentCode) return; navigator.clipboard.writeText(currentCode); animateCopy(btn); showToast('Code copied: '+currentCode,'📋');}
+function copySession(btn){ let s=document.getElementById('sessionText').innerText; if(!s||s.includes('Generating')) return; navigator.clipboard.writeText(s); animateCopy(btn); showToast('PEARL~ Session copied!','✅');}
+window.onload=()=>{let img=document.getElementById('logoImg'); img.onload=()=>{img.style.display='block'; document.getElementById('logoBox').childNodes[0].textContent='';}}
 </script>
 </body>
- </html>
+</html>
