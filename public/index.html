@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Pearl Pair</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{background:#0d1117;color:#fff;font-family:sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0}
+.card{background:#161b22;padding:30px;border-radius:15px;width:90%;max-width:400px;text-align:center;border:1px solid #30363d}
+input{width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #30363d;background:#0d1117;color:#fff}
+button{background:#238636;color:#fff;padding:12px 20px;border:none;border-radius:8px;width:100%;font-weight:bold;cursor:pointer}
+code{background:#000;padding:10px;display:block;margin-top:15px;border-radius:8px;word-break:break-all;font-size:11px}
+h1{color:#58a6ff}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>Pearl-MD 💎</h1>
+<p>Enter WhatsApp number with country code</p>
+<input id="num" placeholder="2349012345678" />
+<button onclick="getCode()">Get Pair Code</button>
+<div id="result"></div>
+<button onclick="getSession()" style="margin-top:12px;background:#1f6feb">Get PEARL~ Session</button>
+<div id="session"></div>
+</div>
+<script>
+async function getCode(){
+ let n=document.getElementById('num').value;
+ document.getElementById('result').innerHTML='Loading...';
+ let r=await fetch('/pair?number='+n);
+ let j=await r.json();
+ document.getElementById('result').innerHTML=j.code ? `<h2>CODE: ${j.code}</h2><p>WhatsApp > Linked Devices > Link with phone number > Paste code</p>` : j.error;
+}
+async function getSession(){
+ document.getElementById('session').innerHTML='Checking...';
+ let r=await fetch('/session');
+ let j=await r.json();
+ if(j.session){ document.getElementById('session').innerHTML=`<code>${j.session}</code><p>Copied! Paste in SESSION_ID</p>` } else { document.getElementById('session').innerHTML=j.error }
+}
+</script>
+</body>
+</html>
