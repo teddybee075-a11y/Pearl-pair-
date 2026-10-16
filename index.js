@@ -122,6 +122,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`Pearl Pair running on port ${PORT}`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+}
+module.exports = app;
