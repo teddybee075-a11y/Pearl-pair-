@@ -1,41 +1,158 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Pearl Pair</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pearl Pair - Get Session</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-body{background:#0d1117;color:#fff;font-family:sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0}
-.card{background:#161b22;padding:30px;border-radius:15px;width:90%;max-width:400px;text-align:center;border:1px solid #30363d}
-input{width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #30363d;background:#0d1117;color:#fff}
-button{background:#238636;color:#fff;padding:12px 20px;border:none;border-radius:8px;width:100%;font-weight:bold;cursor:pointer}
-code{background:#000;padding:10px;display:block;margin-top:15px;border-radius:8px;word-break:break-all;font-size:11px}
-h1{color:#58a6ff}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+body{
+  background:#0a0a0f;
+  background-image:radial-gradient(at 20% 30%, #1e1b4b 0%, transparent 50%),
+                   radial-gradient(at 80% 70%, #4c1d95 0%, transparent 50%),
+                   radial-gradient(at 40% 80%, #1e3a8a 0%, transparent 50%);
+  min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;color:#fff;
+}
+.container{width:100%;max-width:420px}
+.header{text-align:center;margin-bottom:30px}
+.header h1{font-size:32px;font-weight:700;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.header p{color:#9ca3af;margin-top:8px;font-size:14px}
+.card{
+  background:rgba(17,17,23,0.8);
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:24px;padding:28px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.5);
+}
+.input-group{margin-bottom:20px}
+.input-group label{font-size:12px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;display:block}
+.input-box{
+  display:flex;align-items:center;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:14px;padding:4px 4px 4px 16px;
+  transition:0.3s;
+}
+.input-box:focus-within{border-color:#6366f1;background:rgba(99,102,241,0.1)}
+.input-box input{
+  flex:1;background:transparent;border:none;outline:none;
+  color:#fff;font-size:15px;padding:12px 0;
+}
+.input-box input::placeholder{color:#6b7280}
+.btn{
+  width:100%;padding:14px;border:none;border-radius:14px;
+  font-weight:600;font-size:15px;cursor:pointer;transition:0.3s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-primary{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(99,102,241,0.4)}
+.btn-secondary{background:rgba(255,255,255,0.08);color:#fff;border:1px solid rgba(255,255,255,0.1);margin-top:12px}
+.btn-secondary:hover{background:rgba(255,255,255,0.12)}
+.code-display{
+  margin-top:20px;background:rgba(0,0,0,0.4);
+  border:1px dashed rgba(99,102,241,0.5);
+  border-radius:14px;padding:20px;text-align:center;
+  display:none;
+}
+.code-display.show{display:block;animation:fadeIn 0.5s}
+.code-display h3{font-size:28px;letter-spacing:4px;color:#a78bfa;margin:10px 0}
+.code-display p{font-size:12px;color:#9ca3af}
+.copy-btn{
+  margin-top:12px;background:rgba(167,139,250,0.2);border:1px solid rgba(167,139,250,0.3);
+  color:#a78bfa;padding:8px 16px;border-radius:8px;font-size:12px;cursor:pointer;
+}
+.session-box{
+  margin-top:20px;background:rgba(16,185,129,0.1);
+  border:1px solid rgba(16,185,129,0.3);
+  border-radius:14px;padding:16px;display:none;word-break:break-all;
+}
+.session-box.show{display:block;animation:fadeIn 0.5s}
+.session-box code{font-size:11px;color:#6ee7b7;line-height:1.5}
+.footer{margin-top:24px;display:flex;gap:12px}
+.footer a{flex:1;text-align:center;padding:10px;background:rgba(255,255,255,0.05);border-radius:10px;font-size:12px;color:#9ca3af;text-decoration:none;border:1px solid rgba(255,255,255,0.08)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.loader{width:18px;height:18px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
-<div class="card">
-<h1>Pearl-MD 💎</h1>
-<p>Enter WhatsApp number with country code</p>
-<input id="num" placeholder="2349012345678" />
-<button onclick="getCode()">Get Pair Code</button>
-<div id="result"></div>
-<button onclick="getSession()" style="margin-top:12px;background:#1f6feb">Get PEARL~ Session</button>
-<div id="session"></div>
+<div class="container">
+<div class="header">
+<h1>Pearl-MD</h1>
+<p>Pair Code & Session Generator</p>
 </div>
+<div class="card">
+<div class="input-group">
+<label>WhatsApp Number</label>
+<div class="input-box">
+<input id="num" type="text" placeholder="234 801 234 5678" />
+</div>
+</div>
+<button class="btn btn-primary" id="pairBtn" onclick="getCode()">
+<span id="pairText">✨ Get Pair Code</span>
+</button>
+
+<div class="code-display" id="codeBox">
+<p>Your Pair Code</p>
+<h3 id="codeText"></h3>
+<p>WhatsApp > Linked Devices > Link with phone number</p>
+<button class="copy-btn" onclick="copyCode()">Copy Code</button>
+</div>
+
+<button class="btn btn-secondary" onclick="getSession()">📋 Get PEARL~ Session</button>
+
+<div class="session-box" id="sessionBox">
+<p style="font-size:12px;color:#6ee7b7;margin-bottom:8px;">✅ Your PEARL~ Session</p>
+<code id="sessionText"></code>
+<br><button class="copy-btn" style="background:rgba(16,185,129,0.2);color:#6ee7b7;border-color:rgba(16,185,129,0.3)" onclick="copySession()">Copy Session</button>
+</div>
+
+<div class="footer">
+<a href="https://github.com/teddybee/Pearl" target="_blank">⭐ GitHub</a>
+<a href="https://whatsapp.com/channel/0029Vax4b2zA2p2fDvKk2n1L" target="_blank">💬 Channel</a>
+</div>
+</div>
+</div>
+
 <script>
+let currentCode = "";
 async function getCode(){
  let n=document.getElementById('num').value;
- document.getElementById('result').innerHTML='Loading...';
- let r=await fetch('/pair?number='+n);
- let j=await r.json();
- document.getElementById('result').innerHTML=j.code ? `<h2>CODE: ${j.code}</h2><p>WhatsApp > Linked Devices > Link with phone number > Paste code</p>` : j.error;
+ if(!n) return alert("Enter number with country code");
+ let btn=document.getElementById('pairBtn');
+ let txt=document.getElementById('pairText');
+ btn.disabled=true; txt.innerHTML='<span class="loader"></span> Generating...';
+ try{
+   let r=await fetch('/pair?number='+encodeURIComponent(n));
+   let j=await r.json();
+   if(j.code){
+     currentCode=j.code;
+     document.getElementById('codeText').innerText=j.code;
+     document.getElementById('codeBox').classList.add('show');
+   } else { alert(j.error || "Failed") }
+ } catch(e){ alert("Error: "+e.message) }
+ btn.disabled=false; txt.innerHTML='✨ Get Pair Code';
 }
 async function getSession(){
- document.getElementById('session').innerHTML='Checking...';
- let r=await fetch('/session');
- let j=await r.json();
- if(j.session){ document.getElementById('session').innerHTML=`<code>${j.session}</code><p>Copied! Paste in SESSION_ID</p>` } else { document.getElementById('session').innerHTML=j.error }
+ let box=document.getElementById('sessionBox');
+ let txt=document.getElementById('sessionText');
+ txt.innerText='Generating...'; box.classList.add('show');
+ try{
+   let r=await fetch('/session');
+   let j=await r.json();
+   if(j.session){ txt.innerText=j.session } else { txt.innerText=j.error }
+ } catch(e){ txt.innerText="Error: "+e.message }
+}
+function copyCode(){
+ navigator.clipboard.writeText(currentCode);
+ alert("Code copied: "+currentCode);
+}
+function copySession(){
+ let s=document.getElementById('sessionText').innerText;
+ navigator.clipboard.writeText(s);
+ alert("PEARL~ Session copied!");
 }
 </script>
 </body>
-</html>
+ </html>
