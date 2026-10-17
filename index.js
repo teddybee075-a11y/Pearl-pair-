@@ -1,128 +1,21 @@
 const express = require('express');
-const { default: makeWASocket, useMultiFileAuthState, delay } = require('@whiskeysockets/baileys');
-const QRCode = require('qrcode');
-const fs = require('fs');
-const path = require('path');
-const pino = require('pino');
-
 const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.use(express.json());
-app.use(express.static('public'));
-
-// Store
-let latestQR = null;
-let qrTimeout = null;
-
-// Helper to clear auth
-function clearAuth() {
-  try {
-    if (fs.existsSync('./auth')) {
-      fs.rmSync('./auth', { recursive: true, force: true });
-    }
-  } catch {}
-}
-
-// PAIR CODE ROUTE
-app.get('/pair', async (req, res) => {
-  const number = req.query.number?.replace(/[^0-9]/g, '');
-  if (!number) return res.json({ error: 'Enter number with country code' });
-
-  try {
-    clearAuth();
-    const { state, saveCreds } = await useMultiFileAuthState('./auth');
-    const sock = makeWASocket({
-      auth: state,
-      logger: pino({ level: 'silent' }),
-      printQRInTerminal: false,
-      browser: ['Pearl-MD', 'Chrome', '1.0.0']
-    });
-
-    sock.ev.on('creds.update', saveCreds);
-
-    await delay(1500);
-    
-    let code = await sock.requestPairingCode(number);
-    code = code?.match(/.{1,4}/g)?.join('-') || code;
-    
-    res.json({ code: code });
-
-  } catch (e) {
-    console.error(e);
-    res.json({ error: e.message });
-  }
-});
-
-// QR CODE ROUTE - NEW!
-app.get('/qr', async (req, res) => {
-  try {
-    clearAuth();
-    latestQR = null;
-    
-    const { state, saveCreds } = await useMultiFileAuthState('./auth');
-    const sock = makeWASocket({
-      auth: state,
-      logger: pino({ level: 'silent' }),
-      printQRInTerminal: false,
-      browser: ['Pearl-MD', 'Chrome', '1.0.0']
-    });
-
-    sock.ev.on('creds.update', saveCreds);
-
-    sock.ev.on('connection.update', async (update) => {
-      const { qr, connection } = update;
-      if (qr) {
-        latestQR = await QRCode.toDataURL(qr);
-      }
-      if (connection === 'open') {
-        clearAuth();
-      }
-    });
-
-    // Wait for QR
-    let attempts = 0;
-    while (!latestQR && attempts < 15) {
-      await delay(1000);
-      attempts++;
-    }
-
-    if (latestQR) {
-      res.json({ qr: latestQR });
-      // Auto clear after 60 sec
-      if (qrTimeout) clearTimeout(qrTimeout);
-      qrTimeout = setTimeout(clearAuth, 60000);
-    } else {
-      res.json({ error: 'Failed to generate QR. Try again' });
-    }
-
-  } catch (e) {
-    console.error(e);
-    res.json({ error: e.message });
-  }
-});
-
-// SESSION ROUTE
-app.get('/session', async (req, res) => {
-  try {
-    if (!fs.existsSync('./auth/creds.json')) {
-      return res.json({ error: 'No session found. Pair first!' });
-    }
-    const creds = fs.readFileSync('./auth/creds.json', 'utf-8');
-    const b64 = Buffer.from(creds).toString('base64');
-    const sessionId = 'PEARL~' + b64;
-    
-    res.json({ session: sessionId });
-  } catch (e) {
-    res.json({ error: e.message });
-  }
-});
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.send(`
+    <html>
+    <head><title>Pearl MD</title></head>
+    <body style="text-align:center; font-family:sans-serif; padding:50px; background:#111; color:white">
+      <h1>Pearl-AI is Live! 🤖</h1>
+      <p>Your deployment works!</p>
+      <p>Domain: pearl-ai-delta.vercel.app</p>
+      <p style="color:green">Status: Ready ✅</p>
+      <hr>
+      <p>For WhatsApp bot, deploy full bot to Render</p>
+      <a href="https://github.com/teddybee075-a11y/Pearl-pair-" style="color:cyan">View GitHub</a>
+    </body>
+    </html>
+  `);
 });
 
-if (!process.env.VERCEL) {
-  app.listen(PORT, () => console.log(`Server running on ${PORT}`));
-}
 module.exports = app;
